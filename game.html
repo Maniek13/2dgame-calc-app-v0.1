@@ -234,7 +234,7 @@ function draw_block(){
   let block = new Blocks(ctx, shape, 39, x);
 
   for(let i = 0; i < blocks_array.length; i++){
-    if(points  > 40){
+    if((points  > 50 && points < 60) || (points  > 100 && points < 110) ){
       blocks_array[i].draw(color_block);
     }
     else{
