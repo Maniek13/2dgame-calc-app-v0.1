@@ -1,14 +1,16 @@
 <canvas id="board" ></canvas>
 
 <div id="buttons">
-<button id="start" onclick="play()">Start</button>
-<button id="reset" onclick="reset_game()">Reset</button>
+  <button id="start" onclick="play()">Start</button>
+  <button id="reset" onclick="reset_game()">Reset</button>
 </div>
 
-<p>Score</p>
-<div id="points">0</div>
-<p>Highscore</p>
-<div id="highscore">0</div>
+<div id="score_table">
+  <div>Score</div>
+  <div id="points">0</div>
+  <div>Highscore</div>
+  <div id="highscore">0</div>
+</div>
 
 <div id="GameOver"><p>Game Over</p></div>
 
@@ -343,5 +345,21 @@ document.addEventListener('keydown', event => {
   justify-content: center;
   align-items: center;
 }
+
+#score_table {
+  position: absolute;
+  top: 20;
+  left: 1010;
+  display: inline;
+  background-color: transparent;
+}
+
+#score_table div{
+  padding: 5;
+  display: inline;
+  background-color: transparent;
+}
+
+
 
 </style>
