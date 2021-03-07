@@ -2,23 +2,23 @@ var http = require('http');
 var url = require('url');
 var fs = require('fs');
 var mysql = require('mysql');
-
+const express = require('express');
 
 function path(req){
-  var pathname = url.parse(req.url).pathname;
-  var paths = pathname.split("/");
+  let pathname = url.parse(req.url).pathname;
+  let paths = pathname.split("/");
   paths.reverse().pop();
   
   return paths.reverse();
 }
 
 function parametrs(req){
-  var query = url.parse(req.url).query;
-  var parametrs = {};
+  let query = url.parse(req.url).query;
+  let parametrs = {};
 
   if(query){
     query.split("&").forEach( function(element){
-      var el = element.split("=");
+      let el = element.split("=");
       parametrs[el[0]] = el[1];
     })
   }
@@ -55,7 +55,6 @@ function calc(operation, params){
       wynik = parseFloat(liczba1)*licznik(liczba1, liczba2) - parseFloat(liczba2)*licznik(liczba1, liczba2);
       break;
   }
-
   return wynik.toString();
 }
 
@@ -63,43 +62,35 @@ function core(operation, params, callback){
   return callback(operation, params);
 }
 
-
-
-
 function licznik(liczba1, liczba2){
   if(liczba1.indexOf(".") || liczba2.indexOf(".") ){
-    var t1 = liczba1.substring(liczba1.indexOf("."));
-    var t2 = liczba2.substring(liczba2.indexOf("."));
-  
-
-  if(t1.length > t2.length){
-      return Math.pow(10, t1.length);
+    let t1 = liczba1.substring(liczba1.indexOf("."));
+    let t2 = liczba2.substring(liczba2.indexOf("."));
+    
+    if(t1.length > t2.length){
+        return Math.pow(10, t1.length);
+    }
+    else{
+        return Math.pow(10, t2.length);
+    }
   }
   else{
-      return Math.pow(10, t2.length);
+    return 1;
   }
-}
-else{
-  return 1;
-}
- 
- 
 }
 
 async function odpowiedz(login, password){
+  let con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "gra"
+  });
 
-var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "gra"
-});
-
-return new Promise((resolve, reject) => { 
-
+  return new Promise((resolve, reject) => { 
     con.connect(function(err) {
       if (err) throw err;
-     
+    
       con.query('SELECT * FROM user_password WHERE login = ' + mysql.escape(login) + ' AND password = ' + mysql.escape(password), function (err, result, fields) {
         if (err)throw err;
           resolve(result);
@@ -108,7 +99,7 @@ return new Promise((resolve, reject) => {
   });
 }
 
-const express = require('express');
+
 const app = express();
 
 app.use(express.static('files'));

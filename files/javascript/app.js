@@ -1,32 +1,32 @@
 var odpowiedz;
 
 async function sprawdz(){
-let login = Number(document.getElementById("login").value);
-let password = Number(document.getElementById("password").value);
+  let login = Number(document.getElementById("login").value);
+  let password = Number(document.getElementById("password").value);
 
-let adres = "http://localhost:8080/login?";
-adres += "login=" + login;
-adres +=  "&password=" + password;
+  let adres = "http://localhost:8080/login?";
+  adres += "login=" + login;
+  adres +=  "&password=" + password;
 
-let wynik_login = httpGet(adres);
-let promise = new Promise((resolve, reject) => {
-		setTimeout(() => resolve(wynik_login), 300);
-});
-let result = await promise;
-	
-result = JSON.parse(odpowiedz);
+  let wynik_login = httpGet(adres);
+  let promise = new Promise((resolve, reject) => {
+      setTimeout(() => resolve(wynik_login), 300);
+  });
+  let result = await promise;
+    
+  result = JSON.parse(odpowiedz);
 
-if(result != "" && result != "error"){
-  let adres2 = "http://localhost:8080/app?";
-  adres2 += "login=" + login;
-  window.location.replace(adres2);
-}
-else if(result == ""){
-  document.getElementById("message").innerText = "Wrong data";
-}
-else{
-  document.getElementById("message").innerText = "Database error";
-}
+  if(result != "" && result != "error"){
+    let adres2 = "http://localhost:8080/app?";
+    adres2 += "login=" + login;
+    window.location.replace(adres2);
+  }
+  else if(result == ""){
+    document.getElementById("message").innerText = "Wrong data";
+  }
+  else{
+    document.getElementById("message").innerText = "Database error";
+  }
 }
 
 
@@ -38,7 +38,6 @@ function httpGet(theURL) {
 
   var response = null;
   xmlHttp.onreadystatechange = function() {
-    
     if(xmlHttp.readyState == XMLHttpRequest.DONE) {
       response = xmlHttp.responseText;
      odpowiedz = response;
