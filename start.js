@@ -3,6 +3,8 @@ var url = require('url');
 var fs = require('fs');
 var mysql = require('mysql');
 
+var static = require('node-static');
+
 
 function path(req){
   var pathname = url.parse(req.url).pathname;
@@ -110,55 +112,58 @@ return new Promise((resolve, reject) => {
   });
 }
 
+const express = require('express');
+const app = express();
+
+app.use(express.static('files'));
+
+app.get('/', (req, res) => {
+  res.end('Start page');
+});
+
+app.get('/gra', (req, res) => {
+     page_html('./game.html', res);
+});
 
 
+app.get('/aplication', (req, res) => {
+  page_html('./start.html', res);
+});
 
-http.createServer(function (req, res) {
-  
-if(path(req)[0] != "login"){
-  res.writeHead(200, {'Content-Type': 'text/html'});
-}
-else{
+
+app.get('/login', (req, res) => {
   res.writeHead(200, {'Content-Type': 'application/json'});
-}
-
-
-
-  if(path(req)[0] == "calc"){
-      res.end(core(path(req), parametrs(req), calc));
-  }
-  else 
-  if(path(req)[0] == "aplication"){
-    page_html('./start.html', res);
-  }
-  else 
-  if(path(req)[0] == "login"){
-      let dane = parametrs(req);
-      odpowiedz(dane.login, dane.password).then(results => {
-        if(results != ""){
-          res.end(JSON.stringify(results));
-        }
-        else{
-          res.end("");
-        }
-    }).catch(err => {
-      console.error(err);
-      res.end('Oops!');
+    let dane = parametrs(req);
+    odpowiedz(dane.login, dane.password).then(results => {
+      if(results != ""){
+        let array = [];
+        array[0] = results[0].id;
+        array[1] = results[0].login;
+        res.end(JSON.stringify(array));
+      }
+      else{
+        res.end("");
+      }
+  }).catch(err => {
+    console.error(err);
+    res.end('Oops!');
   });
-  }
-  else 
-  if(path(req)[0] == "gra"){
-      page_html('./game.html', res);
-  }
-  else
-  if(path(req)[0] == "app"){
-    res.end('Nie skonczone!');
-  }
-  else{
-    res.end();
-  }
-}).listen(8080);
+});
 
+app.get('/app', (req, res) => {
+  res.end('Nie skonczone!');
+});
+
+app.get('/app', (req, res) => {
+  res.end('Nie skonczone!');
+});
+
+app.get(['/calc', '/calc/add', 'calc/multiply', 'calc/division', 'calc/substraction'], (req, res) => {
+  res.end(core(path(req), parametrs(req), calc));
+});
+
+
+app.listen(8080);
 
 
 function page_html(nazwa, res){
