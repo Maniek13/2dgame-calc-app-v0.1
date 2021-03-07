@@ -17,9 +17,12 @@ let result = await promise;
 result = JSON.parse(odpowiedz);
 
 if(result != ""){
-let adres2 = "http://localhost:8080/app?";
-adres2 += "login=" + login;
-window.location.replace(adres2);
+  let adres2 = "http://localhost:8080/app?";
+  adres2 += "login=" + login;
+  window.location.replace(adres2);
+}
+else{
+  document.getElementById("wynik").innerText = "Wrong data";
 }
 }
 

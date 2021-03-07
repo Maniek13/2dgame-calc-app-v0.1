@@ -3,8 +3,6 @@ var url = require('url');
 var fs = require('fs');
 var mysql = require('mysql');
 
-var static = require('node-static');
-
 
 function path(req){
   var pathname = url.parse(req.url).pathname;
