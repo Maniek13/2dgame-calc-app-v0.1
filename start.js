@@ -95,8 +95,6 @@ var con = mysql.createConnection({
   database: "gra"
 });
 
-
-
 return new Promise((resolve, reject) => { 
 
     con.connect(function(err) {
@@ -123,7 +121,6 @@ app.get('/gra', (req, res) => {
      page_html('./game.html', res);
 });
 
-
 app.get('/aplication', (req, res) => {
   page_html('./start.html', res);
 });
@@ -140,11 +137,11 @@ app.get('/login', (req, res) => {
         res.end(JSON.stringify(array));
       }
       else{
-        res.end("");
+        res.end(JSON.stringify(""));
       }
   }).catch(err => {
     console.error(err);
-    res.end('Oops!');
+    res.end(JSON.stringify('error'));
   });
 });
 

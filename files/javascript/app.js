@@ -16,13 +16,16 @@ let result = await promise;
 	
 result = JSON.parse(odpowiedz);
 
-if(result != ""){
+if(result != "" && result != "error"){
   let adres2 = "http://localhost:8080/app?";
   adres2 += "login=" + login;
   window.location.replace(adres2);
 }
+else if(result == ""){
+  document.getElementById("message").innerText = "Wrong data";
+}
 else{
-  document.getElementById("wynik").innerText = "Wrong data";
+  document.getElementById("message").innerText = "Database error";
 }
 }
 
