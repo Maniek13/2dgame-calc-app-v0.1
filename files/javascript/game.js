@@ -106,8 +106,8 @@ const KEY = {
 Object.freeze(KEY);
 
 const moves = {
-  [KEY.LEFT]:  p => ({ ...p, x: p.x - 1 }),
-  [KEY.RIGHT]: p => ({ ...p, x: p.x + 1 }),
+  // [KEY.LEFT]:  p => ({ ...p, x: p.x - 1 }),
+  // [KEY.RIGHT]: p => ({ ...p, x: p.x + 1 }),
   [KEY.DOWN]:    p => ({ ...p, x: p.x , y: p.y + 1 }),
   [KEY.UP]:    p => ({ ...p, x: p.x, y: p.y - 1 })
 };
@@ -338,6 +338,7 @@ function what_block(number){
       return shape = [
         [1, 0, 0, 0],
         [1, 0, 0, 0],
+        [1, 0, 0, 0],
         [1, 1, 1, 1]
       ];
     
@@ -345,12 +346,14 @@ function what_block(number){
       return shape = [
         [1, 1, 1, 1],
         [1, 0, 0, 0],
+        [1, 0, 0, 0],
         [1, 0, 0, 0]
       ];
 
     case 4:
       return shape = [
         [1, 1, 1, 1],
+        [0, 0, 0, 1],
         [0, 0, 0, 1],
         [0, 0, 0, 1]
       ];
