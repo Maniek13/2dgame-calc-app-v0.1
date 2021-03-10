@@ -269,15 +269,25 @@ function move(){
 function  block_random(){
   let shape= [[]];
 
-  let x = Math.floor(Math.random() * 5) + 1; 
-  let y = Math.floor(Math.random() * 5) + 1; 
+  let block_number = Math.floor(Math.random() * 5);
 
- for(let i = 0; i< x; i++){
-    let temp = [];
-    for(let j = 0; j< y; j++){
-      temp[j] = Math.floor(Math.random() * 3);
+  console.log(block_number);
+   
+  if(block_number == 0){
+    let x = Math.floor(Math.random() * 5) + 1; 
+    let y = Math.floor(Math.random() * 5) + 1; 
+
+    for(let i = 0; i< x; i++){
+      let temp = [];
+      for(let j = 0; j< y; j++){
+        temp[j] = Math.floor(Math.random() * 2);
+      }
+      shape[i] = temp;
     }
-    shape[i] = temp;
+  }
+  else{
+    shape = what_block(block_number);
+    console.log(shape);
   }
   
   return shape;
@@ -298,6 +308,40 @@ function  end(){
   game_status = 0;
 }
 
+function what_block(number){
 
+  switch (number) {
+    case 1: 
+      return shape = [
+        [0, 1, 1, 1],
+        [0, 0, 0, 0]
+      ];
+
+    case 2:
+      return shape = [
+        [1, 0, 0, 0],
+        [1, 0, 0, 0],
+        [1, 1, 1, 1]
+      ];
+    
+    case 3:
+      return shape = [
+        [1, 1, 1, 1],
+        [1, 0, 0, 0],
+        [1, 0, 0, 0]
+      ];
+
+      case 3:
+      return shape = [
+        [1, 1, 1, 1],
+        [0, 0, 0, 1],
+        [0, 0, 0, 1]
+      ];
+  
+    default:
+      break;
+  }
+
+}
 
 
