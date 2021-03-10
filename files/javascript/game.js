@@ -232,6 +232,15 @@ function draw_block(){
     color_block = `#${Math.floor(Math.random()*16777215).toString(16)}`;
   }
 
+  if(x <= 2){
+    x = 0;
+  }
+  else if(x <= 6){
+   x = 4;
+  }
+  else{
+    x = 7;
+  }
   let block = new Blocks(ctx, shape, 39, x);
 
   for(let i = 0; i < blocks_array.length; i++){
@@ -271,8 +280,6 @@ function  block_random(){
 
   let block_number = Math.floor(Math.random() * 5);
 
-  console.log(block_number);
-   
   if(block_number == 0){
     let x = Math.floor(Math.random() * 5) + 1; 
     let y = Math.floor(Math.random() * 5) + 1; 
@@ -284,12 +291,22 @@ function  block_random(){
       }
       shape[i] = temp;
     }
+
+    
+
+    if(shape.includes(1) == false){
+      shape = [
+        [0, 1, 0],
+        [0, 1, 0],
+        [0, 1, 0],
+        [0, 1, 0]
+      ];
+    }
   }
   else{
     shape = what_block(block_number);
-    console.log(shape);
   }
-  
+
   return shape;
 }
 
@@ -331,7 +348,7 @@ function what_block(number){
         [1, 0, 0, 0]
       ];
 
-      case 3:
+    case 4:
       return shape = [
         [1, 1, 1, 1],
         [0, 0, 0, 1],
@@ -343,5 +360,3 @@ function what_block(number){
   }
 
 }
-
-
