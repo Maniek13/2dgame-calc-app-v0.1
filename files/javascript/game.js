@@ -15,6 +15,7 @@ var t1 = 100;
 var t2 = 1000;
 var color_block = "#ff0000";
 var colors = [];
+var points2 = 0;
 
 class Board{
   reset() {
@@ -22,6 +23,7 @@ class Board{
     colors = [];
     blocks_number_of = 0;
     points = 0;
+    points2 = 0;
     game_status = 0;
     t1 = 100;
     t2 = 1000;
@@ -73,10 +75,23 @@ class Blocks {
   this.shape.forEach((row, y) => {
     row.forEach((value, x) => {
       if (value > 0) {
+        if(y-1 >=0){
+          if(this.x + x == 0 && this.shape[y-1][x] == 0){
+            points2 += 1/2;
+          }
+        }
+        else{
+          if(this.x + x == 0){
+            points2 += 1/2;
+          }
+        }
+
         this.ctx.fillRect(this.x + x, this.y + y, 1, 1);
       }
     });
   });
+
+
   }
 
   valid_block(p){
@@ -97,8 +112,6 @@ class Blocks {
 }
 
 const KEY = {
-  LEFT: 37,
-  RIGHT: 39,
   DOWN: 40,
   UP: 38
 }
@@ -106,8 +119,6 @@ const KEY = {
 Object.freeze(KEY);
 
 const moves = {
-  // [KEY.LEFT]:  p => ({ ...p, x: p.x - 1 }),
-  // [KEY.RIGHT]: p => ({ ...p, x: p.x + 1 }),
   [KEY.DOWN]:    p => ({ ...p, x: p.x , y: p.y + 1 }),
   [KEY.UP]:    p => ({ ...p, x: p.x, y: p.y - 1 })
 };
@@ -186,7 +197,7 @@ function play() {
         t1 = 150;
         t2 = 300;
       }
-      document.getElementById('points').innerText = Math.round(points/2);
+      document.getElementById('points').innerText = Math.floor(points2);
     }
     else{
       end();
@@ -206,7 +217,7 @@ function play() {
     if(points > 100){
       draw_block_new();
     }
-    draw_block_new();
+     draw_block_new();
     
     if(stop == true){
       clearInterval(p1);
@@ -232,12 +243,15 @@ function draw_block(){
     color_block = `#${Math.floor(Math.random()*16777215).toString(16)}`;
   }
 
-  if(x <= 2){
+  if(x <= 1){
     x = 0;
   }
-  else if(x <= 6){
-   x = 4;
+  else if(x <= 4){
+   x = 3;
   }
+  else if(x <= 7){
+    x = 5;
+   }
   else{
     x = 7;
   }
@@ -278,7 +292,7 @@ function move(){
 function  block_random(){
   let shape= [[]];
 
-  let block_number = Math.floor(Math.random() * 5);
+  let block_number = Math.floor(Math.random() * 12);
 
   if(block_number == 0){
     let x = Math.floor(Math.random() * 5) + 1; 
@@ -318,8 +332,11 @@ function reset_game(){
 
 function  end(){
   stop = true;
-  score = Math.round(points/2);
-  document.getElementById('highscore').innerText = score;
+ 
+  if(Math.floor(points2) > document.getElementById('highscore').innerText){
+    document.getElementById('highscore').innerText = Math.floor(points2);
+  }
+
   document.getElementById('points').innerText = 0;
   document.getElementById('GameOver').style.display = "flex";
   game_status = 0;
@@ -330,13 +347,12 @@ function what_block(number){
   switch (number) {
     case 1: 
       return shape = [
-        [0, 1, 1, 1],
+        [1, 1, 1, 1],
         [0, 0, 0, 0]
       ];
 
     case 2:
       return shape = [
-        [1, 0, 0, 0],
         [1, 0, 0, 0],
         [1, 0, 0, 0],
         [1, 1, 1, 1]
@@ -346,7 +362,6 @@ function what_block(number){
       return shape = [
         [1, 1, 1, 1],
         [1, 0, 0, 0],
-        [1, 0, 0, 0],
         [1, 0, 0, 0]
       ];
 
@@ -354,12 +369,57 @@ function what_block(number){
       return shape = [
         [1, 1, 1, 1],
         [0, 0, 0, 1],
-        [0, 0, 0, 1],
         [0, 0, 0, 1]
       ];
-  
-    default:
-      break;
+
+    case 5:
+      return shape = [
+        [0, 0, 0, 1],
+        [0, 0, 0, 1],
+        [1, 1, 1, 1]
+      ];
+
+    case 6:
+      return shape = [
+        [1, 1, 1],
+        [0, 1, 0],
+        [0, 1, 0]
+      ];
+
+    case 7:
+      return shape = [
+        [0, 0, 1],
+        [1, 1, 1],
+        [0, 0, 1]
+      ];
+
+    case 8:
+      return shape = [
+        [1, 1, 1],
+        [1, 1, 1],
+        [1, 1, 1]
+      ];
+
+    case 9:
+      return shape = [
+        [0, 1],
+        [1, 1],
+        [1, 0]
+      ];
+
+    case 10:
+      return shape = [
+        [0, 1, 1],
+        [1, 1, 0]
+      ];
+    
+
+    case 11:
+      return shape = [
+        [0, 1, 1],
+        [0, 1, 0],
+        [1, 1, 0]
+      ];
   }
 
 }
