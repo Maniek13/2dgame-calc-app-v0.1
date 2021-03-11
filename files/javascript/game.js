@@ -1,35 +1,34 @@
 
 var cols;
 var rows;
-var block_size ;
+var block_size;
 var canvas;
-var ctx ;
+var ctx;
 
 var blocks_array = [];
 var blocks_number_of = 0;
 var points = 0;
+var points2 = 0;
 var score = 0;
-var stop = false;
+var stop_var = false;
 var game_status = 0;
 var t1 = 100;
 var t2 = 1000;
 var color_block = "#ff0000";
 var colors = [];
-var points2 = 0;
-var first = true;
 
 
 class Board{
   reset() {
     blocks_array = [];
-    colors = [];
     blocks_number_of = 0;
     points = 0;
     points2 = 0;
+    score = 0;
     game_status = 0;
     t1 = 100;
     t2 = 1000;
-    first = true;
+    colors = [];
     color_block = "#ff0000";
     document.getElementById('GameOver').style.display = "none";
   }
@@ -167,7 +166,7 @@ ctx.scale(block_size, block_size);
 }
 
 function play() {
-  stop = false;
+  stop_var = false;
   game_status = 1;
   document.getElementById('start').disabled = true;
   
@@ -200,13 +199,12 @@ function play() {
         t1 = 150;
         t2 = 300;
       }
-      // document.getElementById('points').innerText = Math.floor(points2);
     }
     else{
       end();
     }
 
-    if(stop == true){
+    if(stop_var == true){
       clearInterval(p2);
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); 
     }
@@ -222,7 +220,7 @@ function play() {
     }
     draw_block_new();
     
-    if(stop == true){
+    if(stop_var == true){
       clearInterval(p1);
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); 
     }
@@ -288,9 +286,8 @@ function move(){
       blocks_array.shift();
       colors.shift();
       blocks_number_of -= 1;
- 
-
-      document.getElementById('points').innerText = Math.floor(points2);
+      points2 -=1 ;
+      document.getElementById('points').innerText = points2;
     } 
   }
 }
@@ -316,10 +313,10 @@ function  block_random(){
 
     if(shape.includes(1) == false){
       shape = [
-        [0, 1, 0],
-        [0, 1, 0],
-        [0, 1, 0],
-        [0, 1, 0]
+        [1],
+        [1],
+        [1],
+        [1]
       ];
     }
   }
@@ -331,16 +328,17 @@ function  block_random(){
 }
 
 function reset_game(){
-  stop = true;
+  stop_var = true;
   document.getElementById('start').disabled = false;
+  document.getElementById('points').innerText = 0;
   board.reset();
 }
 
 function  end(){
-  stop = true;
+  stop_var = true;
  
   if(Math.floor(points2) > document.getElementById('highscore').innerText){
-    document.getElementById('highscore').innerText = Math.floor(points2);
+    document.getElementById('highscore').innerText = points2;
   }
 
   document.getElementById('points').innerText = 0;
