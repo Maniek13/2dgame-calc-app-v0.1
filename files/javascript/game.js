@@ -16,6 +16,8 @@ var t2 = 1000;
 var color_block = "#ff0000";
 var colors = [];
 var points2 = 0;
+var first = true;
+
 
 class Board{
   reset() {
@@ -27,6 +29,7 @@ class Board{
     game_status = 0;
     t1 = 100;
     t2 = 1000;
+    first = true;
     color_block = "#ff0000";
     document.getElementById('GameOver').style.display = "none";
   }
@@ -77,12 +80,12 @@ class Blocks {
       if (value > 0) {
         if(y-1 >=0){
           if(this.x + x == 0 && this.shape[y-1][x] == 0){
-            points2 += 1/2;
+            points2 += 1;
           }
         }
         else{
           if(this.x + x == 0){
-            points2 += 1/2;
+            points2 += 1;
           }
         }
 
@@ -134,19 +137,18 @@ document.addEventListener('keydown', event => {
     
     let p = moves[event.keyCode](board.player);
 
+      if(board.block.valid_block(p) != true ){
+        if(board.player.valid_board(p) == false){
+        board.player.move(p);
+        }
 
-    if(board.block.valid_block(p) != true ){
-      if(board.player.valid_board(p) == false){
-      board.player.move(p);
+        board.block.draw();
+        board.player.draw();
       }
-
-      board.block.draw();
-      board.player.draw();
+      else{
+      end();
+      }
     }
-    else{
-     end();
-    }
-  }
   }
 
 });
@@ -184,6 +186,7 @@ function play() {
     if(board.block.valid_block(board.player) != true){
       move();
       draw_block();
+      
       if(points < 10){
         points += 1/10;
       }
@@ -197,7 +200,7 @@ function play() {
         t1 = 150;
         t2 = 300;
       }
-      document.getElementById('points').innerText = Math.floor(points2);
+      // document.getElementById('points').innerText = Math.floor(points2);
     }
     else{
       end();
@@ -217,7 +220,7 @@ function play() {
     if(points > 100){
       draw_block_new();
     }
-     draw_block_new();
+    draw_block_new();
     
     if(stop == true){
       clearInterval(p1);
@@ -255,7 +258,6 @@ function draw_block(){
   else{
     x = 7;
   }
-  let block = new Blocks(ctx, shape, 39, x);
 
   for(let i = 0; i < blocks_array.length; i++){
     if((points  > 50 && points < 60) || (points  > 100 && points < 110) ){
@@ -265,6 +267,8 @@ function draw_block(){
       blocks_array[i].draw(colors[i]);
     }
   }
+
+  let block = new Blocks(ctx, shape, 39, x);
 
   block.draw(color_block);
   board.block = block;
@@ -279,12 +283,14 @@ function move(){
     block_single.x -= 1;
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); 
     board.player.draw();
-    block_single.draw();
     }
     else{
       blocks_array.shift();
       colors.shift();
       blocks_number_of -= 1;
+ 
+
+      document.getElementById('points').innerText = Math.floor(points2);
     } 
   }
 }
