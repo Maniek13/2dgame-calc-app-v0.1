@@ -37,22 +37,22 @@ function calc(operation, params){
       break;
 
     case "add" :
-      wynik = (parseFloat(number1)*licznik(number1, number2)  + parseFloat(number2)*licznik(number1, number2) )/ licznik(number1, number2);
+      wynik = (parseFloat(number1)*counter(number1, number2)  + parseFloat(number2)*counter(number1, number2) )/ counter(number1, number2);
       break;
 
     case "multiply" :
-      wynik = parseFloat(number1)*licznik(number1, number2)* parseFloat(number2)*licznik(number1, number2)/licznik(number1, number2)/licznik(number1, number2);
+      wynik = parseFloat(number1)*counter(number1, number2)* parseFloat(number2)*counter(number1, number2)/counter(number1, number2)/counter(number1, number2);
       break;
     
     case "division" :
       if( parseFloat(number2) != 0){
-        wynik = parseFloat(number1)*licznik(number1, number2)/ parseFloat(number2)*licznik(number1, number2);
+        wynik = parseFloat(number1)*counter(number1, number2)/ parseFloat(number2)*counter(number1, number2);
       }
       wynik = "nie można dzielić przez zero"; 
       break;
 
     case "substraction" :
-      wynik = parseFloat(number1)*licznik(number1, number2) - parseFloat(number2)*licznik(number1, number2);
+      wynik = parseFloat(number1)*counter(number1, number2) - parseFloat(number2)*counter(number1, number2);
       break;
   }
   return wynik.toString();
@@ -62,7 +62,7 @@ function core(operation, params, callback){
   return callback(operation, params);
 }
 
-function licznik(number1, number2){
+function counter(number1, number2){
   if(number1.indexOf(".") || number2.indexOf(".") ){
     let t1 = number1.substring(number1.indexOf("."));
     let t2 = number2.substring(number2.indexOf("."));
@@ -105,14 +105,14 @@ const app = express();
 app.use(express.static('files'));
 
 app.get('/', (req, res) => {
-  res.end('Start page');
+  page_html('./pages/index.html', res);
 });
 
 app.get('/game', (req, res) => {
      page_html('./pages/game.html', res);
 });
 
-app.get('/aplication', (req, res) => {
+app.get('/application', (req, res) => {
   page_html('./pages/start.html', res);
 });
 
@@ -140,9 +140,6 @@ app.get('/app', (req, res) => {
   res.end('Nie skonczone!');
 });
 
-app.get('/app', (req, res) => {
-  res.end('Nie skonczone!');
-});
 
 app.get(['/calc', '/calc/add', 'calc/multiply', 'calc/division', 'calc/substraction'], (req, res) => {
   res.end(core(path(req), parametrs(req), calc));
