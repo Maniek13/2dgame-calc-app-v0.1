@@ -20,8 +20,6 @@ var colors = [];
 
 class Board{
   reset() {
-    blocks_array = [];
-    blocks_number_of = 0;
     points = 0;
     points2 = 0;
     score = 0;
@@ -97,19 +95,19 @@ class Blocks {
   }
 
   valid_block(p){
-    let wynik;
+    let score;
     for(let i = 0; i < blocks_array.length; i++){
       let block = blocks_array[i];
       block.shape.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value > 0 && block.x+x == p.x && block.y+y == p.y) {
-          wynik = true;
+          score = true;
         }
       });
     });
    
     }
-    return wynik;
+    return score;
   }
 }
 
@@ -166,6 +164,8 @@ ctx.scale(block_size, block_size);
 }
 
 function play() {
+  blocks_array = [];
+  blocks_number_of = 0;
   stop_var = false;
   game_status = 1;
   document.getElementById('start').disabled = true;
@@ -223,6 +223,7 @@ function play() {
     if(stop_var == true){
       clearInterval(p1);
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); 
+      
     }
   } , t2);
 }
@@ -332,6 +333,7 @@ function reset_game(){
   document.getElementById('start').disabled = false;
   document.getElementById('points').innerText = 0;
   board.reset();
+  
 }
 
 function  end(){

@@ -28,31 +28,31 @@ function parametrs(req){
 function calc(operation, params){
   let wynik = "";
 
-  let liczba1 = params.liczba1;
-  let liczba2 = params.liczba2;
+  let number1 = params.number1;
+  let number2 = params.number2;
 
   switch(operation[1]){
     case undefined : 
-      wynik = "Wpisz calc/action?liczba1=X&liczba2=Y, Gdzie action = {add, multiply, division, substraction} a X i Y to liczby do policzenia";
+      wynik = "Wpisz calc/action?number1=X&number2=Y, Gdzie action = {add, multiply, division, substraction} a X i Y to liczby do policzenia";
       break;
 
     case "add" :
-      wynik = (parseFloat(liczba1)*licznik(liczba1, liczba2)  + parseFloat(liczba2)*licznik(liczba1, liczba2) )/ licznik(liczba1, liczba2);
+      wynik = (parseFloat(number1)*licznik(number1, number2)  + parseFloat(number2)*licznik(number1, number2) )/ licznik(number1, number2);
       break;
 
     case "multiply" :
-      wynik = parseFloat(liczba1)*licznik(liczba1, liczba2)* parseFloat(liczba2)*licznik(liczba1, liczba2)/licznik(liczba1, liczba2)/licznik(liczba1, liczba2);
+      wynik = parseFloat(number1)*licznik(number1, number2)* parseFloat(number2)*licznik(number1, number2)/licznik(number1, number2)/licznik(number1, number2);
       break;
     
     case "division" :
-      if( parseFloat(liczba2) != 0){
-        wynik = parseFloat(liczba1)*licznik(liczba1, liczba2)/ parseFloat(liczba2)*licznik(liczba1, liczba2);
+      if( parseFloat(number2) != 0){
+        wynik = parseFloat(number1)*licznik(number1, number2)/ parseFloat(number2)*licznik(number1, number2);
       }
       wynik = "nie można dzielić przez zero"; 
       break;
 
     case "substraction" :
-      wynik = parseFloat(liczba1)*licznik(liczba1, liczba2) - parseFloat(liczba2)*licznik(liczba1, liczba2);
+      wynik = parseFloat(number1)*licznik(number1, number2) - parseFloat(number2)*licznik(number1, number2);
       break;
   }
   return wynik.toString();
@@ -62,10 +62,10 @@ function core(operation, params, callback){
   return callback(operation, params);
 }
 
-function licznik(liczba1, liczba2){
-  if(liczba1.indexOf(".") || liczba2.indexOf(".") ){
-    let t1 = liczba1.substring(liczba1.indexOf("."));
-    let t2 = liczba2.substring(liczba2.indexOf("."));
+function licznik(number1, number2){
+  if(number1.indexOf(".") || number2.indexOf(".") ){
+    let t1 = number1.substring(number1.indexOf("."));
+    let t2 = number2.substring(number2.indexOf("."));
     
     if(t1.length > t2.length){
         return Math.pow(10, t1.length);
@@ -79,12 +79,12 @@ function licznik(liczba1, liczba2){
   }
 }
 
-async function odpowiedz(login, password){
+async function game_answer(login, password){
   let con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "gra"
+    database: "game_node"
   });
 
   return new Promise((resolve, reject) => { 
@@ -108,19 +108,19 @@ app.get('/', (req, res) => {
   res.end('Start page');
 });
 
-app.get('/gra', (req, res) => {
-     page_html('./game.html', res);
+app.get('/game', (req, res) => {
+     page_html('./pages/game.html', res);
 });
 
 app.get('/aplication', (req, res) => {
-  page_html('./start.html', res);
+  page_html('./pages/start.html', res);
 });
 
 
 app.get('/login', (req, res) => {
   res.writeHead(200, {'Content-Type': 'application/json'});
-    let dane = parametrs(req);
-    odpowiedz(dane.login, dane.password).then(results => {
+    let data = parametrs(req);
+    game_answer(data.login, data.password).then(results => {
       if(results != ""){
         let array = [];
         array[0] = results[0].id;
@@ -152,8 +152,8 @@ app.get(['/calc', '/calc/add', 'calc/multiply', 'calc/division', 'calc/substract
 app.listen(8080);
 
 
-function page_html(nazwa, res){
-  fs.readFile(nazwa, null, function (error, data) {
+function page_html(name, res){
+  fs.readFile(name, null, function (error, data) {
     if (error) {
       res.writeHead(404);
       res.write("File not found!");
