@@ -63,7 +63,10 @@ function core(operation, params, callback){
 }
 
 function counter(number1, number2){
-  if(number1.indexOf(".") || number2.indexOf(".") ){
+  let a = number1.indexOf(".");
+  let b = number2.indexOf(".");
+
+  if(a !== -1|| b !== -1){
     let t1 = number1.substring(number1.indexOf("."));
     let t2 = number2.substring(number2.indexOf("."));
     
